@@ -1,0 +1,6 @@
+{
+  "short_name": "Sputnik",
+  "name": "Currency conversion",
+  "start_url": ".",
+  "display": "standalone"
+}
