@@ -7,7 +7,6 @@ import CurrencySection from '../../components/currencyToSection/CurrencySection'
 import { useFiats } from '../../hooks/useFiats';
 import DropDown from '../../components/dropDown/DropDown';
 import styles from './styles.module.scss';
-import { useRoundedNumber } from '../../hooks/useRoundedNumber';
 
 const CurrenciesPage = () => {
   const [currencies, setCurrencies] = useState<ICurrencyRate[]>([DEFAULT_CURRENCIES]);

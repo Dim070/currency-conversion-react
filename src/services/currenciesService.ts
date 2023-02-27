@@ -11,6 +11,7 @@ export const getConvert = async ({ from, to, amount }: IConvert) => {
         amount
       }
     })
+
     .then((response) => {
       return response.data.response;
     })
