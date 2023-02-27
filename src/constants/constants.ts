@@ -1,4 +1,4 @@
-import { IFeat } from '../models/ICurrencies';
+import { ICurrencyRate, IFeat } from '../models/ICurrencies';
 import { IConvert } from '../models/IConvert';
 
 export const API_KEY = '?api_key=90770932cf473894401015af8002caf2';
@@ -16,3 +16,12 @@ export const DEFAULT_CONVERT: IConvert = {
   amount: 0,
   value: 0
 };
+
+export const DEFAULT_CURRENCIES: ICurrencyRate = {
+  currency: '',
+  rate: 0
+};
+
+export const DEFAULT_CURRENCIES_LENGTH = 10;
+export const DEFAULT_ROUNDED_NUMBER = 1;
+export const DEBOUNCE_TIME = 800;

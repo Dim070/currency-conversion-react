@@ -1,10 +1,11 @@
-import React, { ChangeEvent, memo, useEffect, useState } from 'react';
-import { Container, InputAdornment } from '@mui/material';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import styles from './styles.module.scss';
-import { DEFAULT_CONVERT } from '../../constants/constants';
+import { DEBOUNCE_TIME, DEFAULT_CONVERT } from '../../constants/constants';
 import { IConvert } from '../../models/IConvert';
-import { OutlinedInput } from '@material-ui/core';
 import { getConvert } from '../../services/currenciesService';
+import { Link } from 'react-router-dom';
+import CurrencySection from '../../components/currencyToSection/CurrencySection';
+import { useRoundedNumber } from '../../hooks/useRoundedNumber';
 
 function MainPage() {
   const [amount, setAmount] = useState<number>(0);
@@ -24,41 +25,24 @@ function MainPage() {
           ...prev,
           amount: +e.target.value
         }));
-      }, 2000);
+      }, DEBOUNCE_TIME);
       return () => clearTimeout(getData);
     }
   };
 
-  const roundedNumber = () => {
-    return convertData.value ? convertData.value.toFixed(1) : '';
-  };
+  const currencyValue = useRoundedNumber(convertData.value || 0);
 
   return (
     <>
-      <Container className="container">
-        <div className={styles.wrapper}>
-          <div className={styles.converter}>
-            <span className={styles.text}>У меня есть</span>
-            <OutlinedInput
-              className={styles.input}
-              inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-              endAdornment={<InputAdornment position="end">{convertData.from}</InputAdornment>}
-              onChange={(e) => handleChange(e)}
-              value={amount || ''}
-            />
-
-            <span className={styles.text}>Хочу приобрести</span>
-            <OutlinedInput
-              className={styles.input}
-              disabled={true}
-              endAdornment={<InputAdornment position="end">{convertData.to}</InputAdornment>}
-              value={roundedNumber()}
-            />
-          </div>
+      <div className={styles.wrapper}>
+        <div className={styles.converter}>
+          <CurrencySection value={amount} label="У меня есть" currency={convertData.from} handler={handleChange} />
+          <CurrencySection value={currencyValue || 0} label="Хочу приобрести" currency={convertData.to} />
+          <Link to="/currencies">Перейти на страницу валют</Link>
         </div>
-      </Container>
+      </div>
     </>
   );
 }
 
-export default memo(MainPage);
+export default MainPage;

@@ -24,5 +24,5 @@ export const useFiats = () => {
     });
   }, []);
 
-  return { fiats };
+  return fiats;
 };
