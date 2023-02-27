@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getCurrencies } from '../../services/currenciesService';
+import { fetchCurrencies } from '../../services/currenciesService';
 import { convertRatesToObjectArray } from '../../utils/utils';
 import { ICurrencyRate } from '../../models/ICurrencies';
 import { DEFAULT_CURRENCIES } from '../../constants/constants';
@@ -7,15 +7,24 @@ import CurrencySection from '../../components/currencyToSection/CurrencySection'
 import { useFiats } from '../../hooks/useFiats';
 import DropDown from '../../components/dropDown/DropDown';
 import styles from './styles.module.scss';
-import { useRoundedNumber } from '../../hooks/useRoundedNumber';
+import { useQuery } from 'react-query';
 
 const CurrenciesPage = () => {
   const [currencies, setCurrencies] = useState<ICurrencyRate[]>([DEFAULT_CURRENCIES]);
   const [defaultCurrency, setDefaultCurrency] = useState('RUB');
 
+  // ddos на сервер
+  const { data: currenciesData } = useQuery(['currencies', defaultCurrency], () => fetchCurrencies(defaultCurrency), {
+    keepPreviousData: true,
+    enabled: defaultCurrency === 'RUB',
+    refetchOnWindowFocus: false
+  });
+
+  console.log(currencies, 'currencies');
+
   useEffect(() => {
-    getCurrencies(defaultCurrency).then((response) => setCurrencies(convertRatesToObjectArray(response.rates)));
-  }, [defaultCurrency]);
+    setCurrencies(convertRatesToObjectArray(currenciesData));
+  }, [currenciesData]);
 
   const currencyChange = (value: string) => {
     setDefaultCurrency(value);

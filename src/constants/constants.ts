@@ -1,7 +1,7 @@
 import { ICurrencyRate, IFeat } from '../models/ICurrencies';
 import { IConvert } from '../models/IConvert';
 
-export const API_KEY = '?api_key=90770932cf473894401015af8002caf2';
+export const API_KEY = '?api_key=b5cd70da6ae228ecf9bce36ad3807c89';
 export const API_CONVERT = 'https://api.currencybeacon.com/v1/convert';
 export const API_LATEST = 'https://api.currencybeacon.com/v1/latest';
 export const API_FEATS = 'https://api.currencybeacon.com/v1/currencies';

@@ -6,16 +6,21 @@ import './assets/scss/style.global.scss';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import CurrenciesPage from './pages/currenciesPage/CurrenciesPage';
 import { Container } from '@material-ui/core';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
+const queryClient = new QueryClient();
+
 root.render(
   <React.StrictMode>
     <BrowserRouter>
       <Container className="container">
-        <Routes>
-          <Route path="/" element={<MainPage />} />
-          <Route path="currencies" element={<CurrenciesPage />} />
-        </Routes>
+        <QueryClientProvider client={queryClient}>
+          <Routes>
+            <Route path="/" element={<MainPage />} />
+            <Route path="currencies" element={<CurrenciesPage />} />
+          </Routes>
+        </QueryClientProvider>
       </Container>
     </BrowserRouter>
   </React.StrictMode>

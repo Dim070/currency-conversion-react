@@ -23,9 +23,6 @@ const DropDown: FC<Props> = ({ params, currencyChange, defaultValue }) => {
       <FormControl sx={{ m: 1, width: 200 }}>
         <InputLabel>{defaultValue}</InputLabel>
         <Select value={defaultValue} label="Default currency" onChange={handleChange}>
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
           {params.map(({ currency_code }) => (
             <MenuItem key={currency_code} value={currency_code}>
               {currency_code}

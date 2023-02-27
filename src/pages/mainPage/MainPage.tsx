@@ -1,20 +1,18 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import styles from './styles.module.scss';
 import { DEBOUNCE_TIME, DEFAULT_CONVERT } from '../../constants/constants';
 import { IConvert } from '../../models/IConvert';
-import { getConvert } from '../../services/currenciesService';
 import { Link } from 'react-router-dom';
 import CurrencySection from '../../components/currencyToSection/CurrencySection';
 import { useRoundedNumber } from '../../hooks/useRoundedNumber';
+import { useQuery } from 'react-query';
+import { fetchConvert } from '../../services/currenciesService';
 
 function MainPage() {
   const [amount, setAmount] = useState<number>(0);
   const [convert, setConvert] = useState<IConvert>(DEFAULT_CONVERT);
-  const [convertData, setConvertData] = useState<IConvert>(DEFAULT_CONVERT);
 
-  useEffect(() => {
-    getConvert(convert).then((response) => setConvertData(response));
-  }, [convert]);
+  const { data: convertData } = useQuery<IConvert>(['convert', convert], () => fetchConvert(convert));
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const regex = /^[0-9\b]+$/;
@@ -30,18 +28,16 @@ function MainPage() {
     }
   };
 
-  const currencyValue = useRoundedNumber(convertData.value || 0);
+  const currencyValue = useRoundedNumber(convertData?.value || 0);
 
   return (
-    <>
-      <div className={styles.wrapper}>
-        <div className={styles.converter}>
-          <CurrencySection value={amount} label="У меня есть" currency={convertData.from} handler={handleChange} />
-          <CurrencySection value={currencyValue || 0} label="Хочу приобрести" currency={convertData.to} />
-          <Link to="/currencies">Перейти на страницу валют</Link>
-        </div>
+    <div className={styles.wrapper}>
+      <div className={styles.converter}>
+        <CurrencySection value={amount} label="У меня есть" currency={convertData?.from || ''} handler={handleChange} />
+        <CurrencySection value={currencyValue || 0} label="Хочу приобрести" currency={convertData?.to || ''} />
+        <Link to="/currencies">Перейти на страницу валют</Link>
       </div>
-    </>
+    </div>
   );
 }
 
