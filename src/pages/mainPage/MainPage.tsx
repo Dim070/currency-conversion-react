@@ -5,14 +5,16 @@ import { IConvert } from '../../models/IConvert';
 import { Link } from 'react-router-dom';
 import CurrencySection from '../../components/currencyToSection/CurrencySection';
 import { useRoundedNumber } from '../../hooks/useRoundedNumber';
-import { useQuery } from 'react-query';
 import { fetchConvert } from '../../services/currenciesService';
+import { useQuery } from '@tanstack/react-query';
 
 function MainPage() {
   const [amount, setAmount] = useState<number>(0);
   const [convert, setConvert] = useState<IConvert>(DEFAULT_CONVERT);
 
   const { data: convertData } = useQuery<IConvert>(['convert', convert], () => fetchConvert(convert));
+
+  console.log(convert, 'convert');
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const regex = /^[0-9\b]+$/;
